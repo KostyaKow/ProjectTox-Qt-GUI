@@ -31,7 +31,7 @@ OurUserItemWidget::OurUserItemWidget(QWidget* parent) :
     statusButton->setPopupMode(QToolButton::InstantPopup);
 
     QToolButton* renameUsernameButton = createToolButton(QIcon(":/icons/textfield_rename.png"), QSize(16, 16), "Change Username");
-    QToolButton* copyUserIdButton = createToolButton(QIcon(":/icons/page_copy.png"), QSize(16, 16), "Copy User Id");
+    QToolButton* copyUserIdButton = createToolButton(QIcon(":/icons/page_copy.png"), QSize(16, 16), "Copy User ID");
     connect(renameUsernameButton, &QToolButton::clicked, this, &OurUserItemWidget::onRenameUsernameButtonClicked);
     connect(copyUserIdButton, &QToolButton::clicked, this, &OurUserItemWidget::onCopyUserIdButtonClicked);
 
@@ -84,6 +84,7 @@ void OurUserItemWidget::onUsernameChange()
     QString newUsername = usernameEdit->text();
     //restore old username, usernameLabel still contains it
     usernameEdit->setText(usernameLabel->text());
+    usernameEdit->clearFocus();
     usernameStackedWidget->setCurrentWidget(usernameLabel);
     emit usernameChanged(newUsername);
 }
@@ -99,7 +100,11 @@ void OurUserItemWidget::onRenameUsernameButtonClicked()
 {
     usernameEdit->setText(usernameLabel->text());
     usernameStackedWidget->setCurrentWidget(usernameEdit);
-    usernameEdit->setFocus();
+    if (usernameEdit->hasFocus()) {
+        usernameEdit->clearFocus();
+    } else {
+        usernameEdit->setFocus();
+    }
 }
 
 void OurUserItemWidget::onStatusActionTriggered()

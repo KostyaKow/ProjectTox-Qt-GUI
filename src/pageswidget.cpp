@@ -28,7 +28,7 @@ PagesWidget::PagesWidget(QWidget* parent) :
 // if preformance would be critical, replace with QHash<int friendId, ChatPageWidget*>
 ChatPageWidget* PagesWidget::widget(int friendId) const
 {
-    for (int i = 0; i < count(); i ++) {
+    for (int i = 0; i < count(); i++) {
         ChatPageWidget* chatPage = dynamic_cast<ChatPageWidget*>(QStackedWidget::widget(i));
         if (chatPage != nullptr && chatPage->getFriendId() == friendId) {
             return chatPage;
@@ -78,4 +78,9 @@ void PagesWidget::onMessageSent(const QString& message)
 void PagesWidget::messageReceived(int friendId, const QString &message)
 {
     widget(friendId)->messageReceived(message);
+}
+
+void PagesWidget::failedToSendMessage(int friendId, const QString &message)
+{
+    widget(friendId)->failedToSendMessage(message);
 }

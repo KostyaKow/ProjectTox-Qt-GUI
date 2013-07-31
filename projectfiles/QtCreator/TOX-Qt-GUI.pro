@@ -15,9 +15,12 @@ CONFIG += c++11
 
 INCLUDEPATH += ../../src/ ../../submodules/ProjectTox-Core/core/
 win32:INCLUDEPATH += ../../libs/sodium/include/
+macx:INCLUDEPATH += /usr/local/include
 
 win32 {
     LIBS += -lWS2_32 ../../libs/sodium/lib/libsodium.a
+} macx{
+    LIBS += -L/usr/local/lib -lsodium
 } else {
     LIBS += -lsodium
 }
@@ -48,7 +51,6 @@ SOURCES += \
     ../../src/Settings/basicsettingsdialog.cpp \
     ../../src/Settings/settings.cpp \
     ../../src/dhteditdialog.cpp \
-    ../../src/dhtdialog.cpp \
     ../../src/closeapplicationdialog.cpp \
     ../../src/starter.cpp
 
@@ -75,7 +77,6 @@ HEADERS  += \
     ../../src/Settings/basicsettingsdialog.hpp \
     ../../src/Settings/settings.hpp \
     ../../src/dhteditdialog.hpp \
-    ../../src/dhtdialog.hpp \
     ../../src/closeapplicationdialog.hpp \
     ../../src/starter.hpp
 

@@ -80,10 +80,6 @@ void FriendsWidget::addFriend(int friendId, const QString& userId)
     item->setData(friendId, FriendIdRole);
     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
 
-    /*UserInfo info = userInfoHash[userId];
-    info.username = username;
-    userInfoHash[userId] = info;*/
-
     emit friendAdded(friendId, userId);
 
     Status status = Status::Offline;
@@ -111,9 +107,6 @@ void FriendsWidget::setStatus(QStandardItem* friendItem, Status status)
     friendItem->setData(QVariant::fromValue(status), StatusRole);
 
     int friendId = friendItem->data(FriendIdRole).toInt();
-    /*UserInfo info = userInfoHash[userId];
-    info.status = status;
-    userInfoHash[userId] = info;*/
 
     emit friendStatusChanged(friendId, status);
 }
@@ -144,19 +137,9 @@ void FriendsWidget::onAddFriendButtonClicked()
     AddFriendDialog dialog(this);
 
     if (dialog.exec() == QDialog::Accepted) {
-        //addFriend(dialog.getUserId(), dialog.getUsername());
         emit friendRequested(dialog.getUserId(), dialog.getMessage());
     }
 }
-
-/*FriendsWidget::UserInfo FriendsWidget::getUserInfo(const QString& userId) const
-{
-    if (userInfoHash.contains(userId)) {
-        return userInfoHash[userId];
-    }
-
-    return UserInfo();
-}*/
 
 void FriendsWidget::onFriendContextMenuRequested(const QPoint& pos)
 {
@@ -179,18 +162,38 @@ void FriendsWidget::onCopyUserIdActionTriggered()
 void FriendsWidget::onRemoveFriendActionTriggered()
 {
     QModelIndex selectedIndex = friendView->selectionModel()->selectedIndexes().at(0);
-    QList<QStandardItem*> selectedItems = friendModel->takeRow(friendProxyModel->mapToSource(selectedIndex).row());
 
-    int friendId = selectedItems.at(0)->data(FriendIdRole).toInt();
-    //userInfoHash.remove(userId);
+    int friendId = friendProxyModel->mapToSource(selectedIndex).data(FriendIdRole).toInt();
+
     emit friendRemoved(friendId);
-
-    qDeleteAll(selectedItems);
 }
+
+void FriendsWidget::removeFriend(int friendId)
+{
+    QStandardItem* friendItem = findFriendItem(friendId);
+
+    if (friendItem == nullptr) {
+        return;
+    }
+
+    qDeleteAll(friendModel->takeRow(friendItem->row()));
+}
+
 void FriendsWidget::onFriendSelectionChanged(const QModelIndex& current, const QModelIndex& /*previous*/)
 {
     QStandardItem* item = friendModel->itemFromIndex(friendProxyModel->mapToSource(current));
     if (item != nullptr) {
         emit friendSelectionChanged(item->data(FriendIdRole).toInt());
     }
+}
+
+QString FriendsWidget::getUsername(int friendId)
+{
+    QStandardItem* friendItem = findFriendItem(friendId);
+
+    if (friendItem == nullptr) {
+        return QString();
+    }
+
+    return friendItem->text();
 }

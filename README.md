@@ -4,11 +4,11 @@
 
 A front end for [ProjectTox Core](https://github.com/irungentoo/ProjectTox-Core) written in Qt5 and C++.
 
-Please note that developent is in very beginning and the project is not ready to use yet.
+Please note that development is very early on and the project is not ready to use yet.
 
 ## Screenshot
 
-![Hi There](https://raw.github.com/nurupo/ProjectTox-Qt-GUI/master/screenshot.png "Version 0.1.0 running on Windows 7")
+![Hi There](http://i.imgur.com/Wv3lrO7.png "Version 0.1.0 running on Windows 7")
 
 ## Contributing
 
@@ -50,7 +50,7 @@ Installation should be similar to other Unix systems, but it is not tested yet.
 
 ## Contact
 
-You can usually find me at Tox channel [irc://chat.freenode.net:6667/InsertProjectNameHere](irc://chat.freenode.net:6667/InsertProjectNameHere).
+You can usually find me at the following IRC channel channel: [irc://chat.freenode.net:6667/tox-dev](http://webchat.freenode.net/?channels=#tox-dev).
 
 ## License
 

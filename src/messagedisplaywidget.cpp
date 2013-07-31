@@ -39,7 +39,15 @@ void MessageDisplayWidget::showMessage(const QString& senderUsername, const QStr
     QString timeEscaped = QString(getTime()).toHtmlEscaped();
     QString messageEscaped = message.toHtmlEscaped();
 
-    QString text = QString("<p>%1 (%2)<br><big>%3</big></p>").arg(senderUsernameEscaped).arg(timeEscaped).arg(messageEscaped);
+    QString text = QString("<p><b>%1</b> [%2]<br>%3</p>").arg(senderUsernameEscaped).arg(timeEscaped).arg(messageEscaped);
+    urlify(text);
+    append(text);
+}
+
+void MessageDisplayWidget::showFailedToSendMessage(const QString& message)
+{
+    QString messageEscaped = message.toHtmlEscaped();
+    QString text = QString("<p><font color=\"red\" style=\"font-weight:bold\">Couldn't send following message:</font><br>%1</p>").arg(messageEscaped);
     urlify(text);
     append(text);
 }

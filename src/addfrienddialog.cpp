@@ -23,6 +23,7 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QRegularExpression>
 
 AddFriendDialog::AddFriendDialog(QWidget* parent) :
     QDialog(parent)
@@ -37,7 +38,7 @@ AddFriendDialog::AddFriendDialog(QWidget* parent) :
 
     QLabel* messageLabel = new QLabel("Message:", addFriendGroup);
     messageEdit = new QPlainTextEdit(addFriendGroup);
-    messageEdit->setPlainText("Hello, please add me in your friend list.");
+    messageEdit->setPlainText("Hello, please add me to your friend list.");
 
     QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     buttonBox->button(QDialogButtonBox::Ok)->setDefault(true);
@@ -70,9 +71,16 @@ QString AddFriendDialog::getMessage() const
 
 void AddFriendDialog::accept()
 {
+    const QRegularExpression regExp("^[A-Fa-f0-9]+$");
+
     if (userIdEdit->text().length() == 0 || messageEdit->toPlainText().length() == 0) {
         QMessageBox warning(this);
         warning.setText("Please fill all the fields in.");
+        warning.setIcon(QMessageBox::Warning);
+        warning.exec();
+    } else if (userIdEdit->text().length() != 64 || !userIdEdit->text().contains(regExp)) {
+        QMessageBox warning(this);
+        warning.setText("UserID must be 64 HEX chars.");
         warning.setIcon(QMessageBox::Warning);
         warning.exec();
     } else {
